@@ -14,54 +14,67 @@ def grade_score(score, best):
         return 'F'
 
 def extract_student_info(row):
-    
-    name_match = re.search(r'(?i)studentFile', row)
-    score_match = re.search(r'(?i)scoreFile', row)
+    name_match = re.search(r'(?i)studentname', row)
+    score_match = re.search(r'(?i)score', row)
 
     if name_match and score_match:
-        name_col = name_match.group()
-        score_col = score_match.group()
+        name_col = name_match()
+        score_col = score_match()
 
-        # Extract values using regex
+    
         name = re.search(rf'(?i){name_col}\s*,\s*(?P<name>[\w\s]+)', row).group('name')
         score = int(re.search(rf'(?i){score_col}\s*,\s*(?P<score>\d+)', row).group('score'))
-        
+
         return name, score
     else:
-        raise ValueError()
+        raise ValueError("CSV file must contain 'studentname' and 'score' columns.")
+
+def check_csv_validity(csv_data):
+   
+    if 'studentname' not in csv_data or 'score' not in csv_data:
+        raise ValueError("CSV file must contain 'studentname' and 'score' columns.")
+
+    for row in csv_data:
+        try:
+            int(row['score'])
+        except ValueError:
+            raise ValueError("Invalid data type. 'score' column must contain numbers.")
 
 def main():
-    read_from_csv = True
-
-    if read_from_csv:
-        csv_filename = input("Enter CSV file name: ")
+    try:
         with open(csv_filename, 'r') as csvfile:
-            csv_data = csvfile.read()
-            student_info_list = [extract_student_info(row) for row in csv_data.splitlines()]
+            reader = csv.DictReader(csvfile)
+            csv_data = list(reader)
 
-    else:
-        student_amount = int(input('Total number of students: '))
-        student_info_list = []
-        while len(student_info_list) < student_amount:
-            try:
-                temp_student_info = input(f'Enter {student_amount} student info (e.g., "Name, Score"): ')
-                name, score = extract_student_info(temp_student_info)
-                student_info_list.append((name, score))
-            except ValueError as e:
-                print(f'Error: {e}')
+        check_csv_validity(csv_data)
 
-    best = max(student_info_list, key=lambda x: x[1])[1]
-    student_data = {}
+        best = max(int(row['score']) for row in csv_data)
 
-    for i, (name, score) in enumerate(student_info_list, start=1):
-        grade = grade_score(score, best)
-        student_data[f'student {i}'] = {'name': name, 'score': score, 'grade': grade}
+        for i, row in enumerate(csv_data, start=1):
+            name = row['studentname']
+            score = int(row['score'])
+            grade = grade_score(score, best)
+            student_data[f'student {i}'] = {'name': name, 'score': score, 'grade': grade}
 
-    for student, data in student_data.items():
-        print(f"{student} {data['name']}'s score is {data['score']} and grade is {data['grade']}")
+        with open('output.csv', 'w', newline='') as output_file:
+            fieldnames = ['Student', 'Name', 'Score', 'Grade']
+            writer = csv.DictWriter(output_file, fieldnames=fieldnames)
+            writer.writeheader()
+
+            for student, data in student_data.items():
+                writer.writerow({
+                    'Student': student,
+                    'Name': data['name'],
+                    'Score': data['score'],
+                    'Grade': data['grade']
+                })
+
+        print("Results have been written to 'output.csv'.")
+
+    except FileNotFoundError:
+        print("File not found.")
+    except ValueError as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
-
-
-main()
