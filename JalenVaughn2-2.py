@@ -12,13 +12,14 @@ def main():
                 student_data[(row['Name'])] = row['Score'] 
 
             best = max(student_data.values())
-
-            for i, row in enumerate(student_data, start=1):
+            
+            for i, row in enumerate(student_data):
+                print(row[0])
                 name = row['studentname']
                 score = int(row['score'])
-                grade = grade_score(score, best)
-                print(name,score,grade)
-                student_data[f'student {i}'] = {'name': name, 'score': score, 'grade': grade}
+                student_data[row].append(grade_score(), best)
+
+                #student_data[f'student {i}'] = {'name': name, 'score': score, 'grade': grade}
 
         with open('output.csv', 'w', newline='') as output_file:
             fieldnames = ['Student', 'Name', 'Score', 'Grade']
