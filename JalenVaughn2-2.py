@@ -9,17 +9,15 @@ def main():
         with open(csv_filename, 'r') as csvfile:
             openedInputCSV = csv.DictReader(csvfile)
             for row in openedInputCSV:
-                student_data[(row['Name'])] = row['Score'] 
+                student_data[(row['Name'])] = [row['Score']] 
 
             best = max(student_data.values())
             
-            for i, row in enumerate(student_data):
-                print(row[0])
-                name = row['studentname']
-                score = int(row['score'])
-                student_data[row].append(grade_score(), best)
+            for row in student_data:
+                student_data[row].append(grade_score(int( student_data[row][0] ),int(best[0])))
+            for x in student_data:
+                print(x,student_data[x])
 
-                #student_data[f'student {i}'] = {'name': name, 'score': score, 'grade': grade}
 
         with open('output.csv', 'w', newline='') as output_file:
             fieldnames = ['Student', 'Name', 'Score', 'Grade']
