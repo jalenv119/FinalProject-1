@@ -24,12 +24,11 @@ def main():
             writer = csv.DictWriter(output_file, fieldnames=fieldnames)
             writer.writeheader()
 
-            for student, data in student_data.items():
+            for name, data in student_data.items():
                 writer.writerow({
-                    'Student': student,
-                    'Name': data['name'],
-                    'Score': data['score'],
-                    'Grade': data['grade']
+                'Name': name,
+                'Score': student_data['Score'],
+                'Grade': student_data['Grade']
                 })
 
         print("Results have been written to 'output.csv'.")
