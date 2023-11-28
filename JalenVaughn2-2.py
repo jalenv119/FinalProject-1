@@ -1,3 +1,7 @@
+import os.path
+import csv
+import re
+
 def grade_score(score, best):
     if score >= best - 10:
         return 'A'
@@ -10,8 +14,18 @@ def grade_score(score, best):
     else:
         return 'F'
 
+def inputFileCheck():
+    while True:
+        try:
+            scoreFile = input('Input file name: ').strip()
+            with open(scoreFile) as inputFile:
+                break
+        except FileNotFoundError:
+            print('File does not exist!')
+    return scoreFile
+
 def main():
-    student_amount = int(input('Total number of students:'))
+    scoreFile = inputFileCheck()
     student_scores = []
     while len(student_scores) < student_amount:
         try:
