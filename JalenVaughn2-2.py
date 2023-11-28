@@ -1,6 +1,3 @@
-import csv 
-import re
-
 def grade_score(score, best):
     if score >= best - 10:
         return 'A'
@@ -29,16 +26,6 @@ def extract_student_info(row):
     else:
         raise ValueError("CSV file must contain 'studentname' and 'score' columns.")
 
-def check_csv_validity(csv_data):
-   
-    if 'studentname' not in csv_data or 'score' not in csv_data:
-        raise ValueError("CSV file must contain 'studentname' and 'score' columns.")
-
-    for row in csv_data:
-        try:
-            int(row['score'])
-        except ValueError:
-            raise ValueError("Invalid data type. 'score' column must contain numbers.")
 
 def main():
     try:
