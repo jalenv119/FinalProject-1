@@ -16,15 +16,15 @@ def grade_score(score, best):
 def inputFileCheck():
     while True:
         try:
-            scoreFile = input('Input file name: ').strip()
-            with open(scoreFile) as inputFile:
+            fileName = input('Input file name: ').strip()
+            with open(fileName) as inputFile:
                 break
         except FileNotFoundError:
             print('File does not exist!')
-    return scoreFile
+    return fileName
 
 def outputFileCheck():
-    fileName = 'files/'+input("Output file name: ").strip()
+    fileName = input("Output file name: ").strip()
     while os.path.isfile(fileName):
         while True:
             overwrite = input('Overwrite existing file? (y/n): ').strip().lower()

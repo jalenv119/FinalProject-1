@@ -6,18 +6,17 @@ def main():
 
     try:
         with open(csv_filename, 'r') as csvfile:
-            reader = csv.DictReader(csvfile)
-            csv_data = list(reader)
+            student_data = csv.DictReader(csvfile)
+            for row in student_data:
+                print(row)
 
-        check_csv_validity(csv_data)
-
-        student_data = {}
-        best = max(int(row['score']) for row in csv_data)
-
-        for i, row in enumerate(csv_data, start=1):
+        best = max(int(row['score']) for row in student_data)
+        print(student_data)
+        for i, row in enumerate(student_data, start=1):
             name = row['studentname']
             score = int(row['score'])
             grade = grade_score(score, best)
+            print(name,score,grade)
             student_data[f'student {i}'] = {'name': name, 'score': score, 'grade': grade}
 
         with open('output.csv', 'w', newline='') as output_file:
