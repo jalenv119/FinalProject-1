@@ -13,6 +13,16 @@ def grade_score(score, best):
     else:
         return 'F'
 
+def inputFileCheck():
+    while True:
+        try:
+            scoreFile = input('Input file name: ').strip()
+            with open(scoreFile) as inputFile:
+                break
+        except FileNotFoundError:
+            print('File does not exist!')
+    return scoreFile
+
 def extract_student_info(row):
     name_match = re.search(r'(?i)studentname', row)
     score_match = re.search(r'(?i)score', row)
