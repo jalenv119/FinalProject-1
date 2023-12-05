@@ -15,22 +15,19 @@ def main():
             
             for row in student_data:
                 student_data[row].append(grade_score(int( student_data[row][0] ),int(best[0])))
-            for x in student_data:
-                print(x,student_data[x])
 
 
         with open('output.csv', 'w', newline='') as output_file:
-            fieldnames = ['Student', 'Name', 'Score', 'Grade']
-            writer = csv.DictWriter(output_file, fieldnames=fieldnames)
-            writer.writeheader()
+            writer = csv.writer(output_file)
 
+            writer.writerow(['Name','Score','Grade'])
             for name, data in student_data.items():
-                writer.writerow({
-                'Name': name,
-                'Score': student_data['Score'],
-                'Grade': student_data['Grade']
-                })
-
+                writer.writerow([
+                name,
+                data[0],
+                data[1]
+                ])
+        print(searchScore(student_data,'Joh'))
         print("Results have been written to 'output.csv'.")
 
     except FileNotFoundError:

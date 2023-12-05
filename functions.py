@@ -49,3 +49,9 @@ def extract_student_info(row):
     else:
         raise ValueError("CSV file must contain 'studentname' and 'score' columns.")
 
+def searchScore(data_dict,name_to_search):
+    if name_to_search in data_dict:
+        return name_to_search
+    else:
+        return 1
+
