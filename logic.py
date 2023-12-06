@@ -9,13 +9,15 @@ class Logic(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.submitCsvButton.clicked.connect(self.getStudentScoresCSV)
-        self.csv_filename = ''
+        self.input_filename = ''
+        self.output_filename = ''
 
     def getStudentScoresCSV(self):
         try:
-            self.csv_filename=self.inputFileCheck()
+            self.input_filename=self.inputFileCheck()
+            self.output_filename=self.outputFileCheck()
             student_data = {}
-            with open(self.csv_filename, 'r') as csvfile:
+            with open(self.input_filename, 'r') as csvfile:
                 openedInputCSV = csv.DictReader(csvfile)
                 for row in openedInputCSV:
                     student_data[(row['Name'])] = [row['Score']] 
@@ -24,7 +26,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 
                 for row in student_data:
                     student_data[row].append(self.grade_score(int( student_data[row][0] ),int(best[0])))
-            with open('output.csv', 'w', newline='') as output_file:
+            with open(self.output_filename, 'w', newline='') as output_file:
                 writer = csv.writer(output_file)
 
                 writer.writerow(['Name','Score','Grade'])
@@ -34,12 +36,16 @@ class Logic(QMainWindow, Ui_MainWindow):
                     data[0],
                     data[1]
                     ])
-            print("Results have been written to 'output.csv'.")
+            self.label_3.setText("Results have been written to 'output.csv'.")
 
         except FileNotFoundError:
-            print("File not found.")
+            if self.input_filename == '':
+                self.label_3.setText("Please enter an input filename")
+            if self.input_filename == '' and self.output_filename == '':
+                self.label_3.setText("Please enter an output and input filename.")
+                #TODO please fix output_filename method
         except ValueError as e:
-            print(f"Error: {e}")
+            self.label_3.setText(f"Error: {e}")
 
 
 
