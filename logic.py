@@ -9,10 +9,11 @@ class Logic(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.submitCsvButton.clicked.connect(self.getStudentScoresCSV)
-        self.csv_filename = self.inputFileCheck()
+        self.csv_filename = ''
 
     def getStudentScoresCSV(self):
         try:
+            self.csv_filename=self.inputFileCheck()
             student_data = {}
             with open(self.csv_filename, 'r') as csvfile:
                 openedInputCSV = csv.DictReader(csvfile)
@@ -45,7 +46,7 @@ class Logic(QMainWindow, Ui_MainWindow):
     def inputFileCheck(self) -> str:
         while True:
             try:
-                fileName = input('Input file name: ').strip()
+                fileName = self.lineEdit.text()
                 with open(fileName) as inputFile:
                     break
             except FileNotFoundError:
