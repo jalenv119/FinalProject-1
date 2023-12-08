@@ -73,17 +73,23 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Output"))
         self.label_3.setText(_translate("MainWindow", "Errors"))
         self.submitCsvButton.setText(_translate("MainWindow", "SUBMIT"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.CSV), _translate("MainWindow", "CSV Input"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.CSV), _translate("MainWindow", "CSV Input")
+        )
         self.label_5.setText(_translate("MainWindow", "Name & Grade"))
         self.manualEntryNextStudent.setText(_translate("MainWindow", "Next"))
         self.submitManualEntryButton.setText(_translate("MainWindow", "SUBMIT"))
         self.label_4.setText(_translate("MainWindow", "Output filename"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Manual), _translate("MainWindow", "Manual Input"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.Manual),
+            _translate("MainWindow", "Manual Input"),
+        )
         self.actionyoo.setText(_translate("MainWindow", "yoo"))
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
