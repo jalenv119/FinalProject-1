@@ -36,14 +36,16 @@ class Logic(QMainWindow, Ui_MainWindow):
                     data[0],
                     data[1]
                     ])
-            self.label_3.setText("Results have been written to 'output.csv'.")
+            self.label_3.setText(f"Results have been written \nto '{self.output_filename}'.")
 
         except FileNotFoundError:
             if self.input_filename == '':
-                self.label_3.setText("Please enter an input filename")
+                self.label_3.setText("Please enter an \ninput filename.")
             if self.input_filename == '' and self.output_filename == '':
-                self.label_3.setText("Please enter an output and input filename.")
-                #TODO please fix output_filename method
+                self.label_3.setText("Please enter an \noutput and input filename.")
+            elif self.output_filename == '':
+                self.label_3.setText("Please enter an \noutput filename.")
+
         except ValueError as e:
             self.label_3.setText(f"Error: {e}")
 
@@ -51,23 +53,22 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def inputFileCheck(self) -> str:
         while True:
+            fileName = self.lineEdit.text()
             try:
-                fileName = self.lineEdit.text()
                 with open(fileName) as inputFile:
                     break
-            except FileNotFoundError:
-                return 'File does not exist!'
+            except:
+                self.label_3.setText('File does not exist!')
+                break
+        print(fileName)
         return fileName
 
     def outputFileCheck(self) -> str:
-        fileName = input("Output file name: ").strip()
+        fileName = self.lineEdit_2.text()
         while os.path.isfile(fileName):
             while True:
-                overwrite = input('Overwrite existing file? (y/n): ').strip().lower()
-                if (overwrite == 'y'):
-                    return fileName
-                elif (overwrite == 'n'):
-                    fileName = 'files/'+input('New output file name: ').strip()
+                self.label_3.setText('File Overwritten')
+                return fileName
         return fileName
 
     def grade_score(self, score, best) -> str:
@@ -83,10 +84,16 @@ class Logic(QMainWindow, Ui_MainWindow):
             return 'F'
  
     def searchScore(self,data_dict,name_to_search) -> str:
+        '''
+        uses hashtable lookup to search dictionary via key
+        returns key upon succsess
+        returns fail upon failure
+        '''
+
         if name_to_search in data_dict:
             return name_to_search
         else:
-            return 1  
+            return 'fail'
 
     # def extract_student_info(self,row) :
     #     name_match = re.search(r'(?i)studentname', row)
