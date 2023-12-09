@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Grade Curver"))
         self.label.setText(_translate("MainWindow", "Input"))
         self.label_2.setText(_translate("MainWindow", "Output"))
-        self.label_3.setText(_translate("MainWindow", "Errors"))
+        self.label_3.setText(_translate("MainWindow", ""))
         self.submitCsvButton.setText(_translate("MainWindow", "SUBMIT"))
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.CSV), _translate("MainWindow", "CSV Input")
