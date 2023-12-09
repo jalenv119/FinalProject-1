@@ -17,6 +17,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.input_filename: str = ""
         self.output_filename: str = ""
         self.student_data: dict = {}
+        self.tabWidget.currentChanged.connect(self.clearDictOut)
 
     def getStudentScoresCSV(self) -> None:
         """
@@ -24,7 +25,6 @@ class Logic(QMainWindow, Ui_MainWindow):
         """
 
         try:
-            self.student_data = {}
             self.input_filename = self.inputFileCheck()
             self.output_filename = self.outputFileCheck()
             if self.output_filename == "donot":
@@ -50,7 +50,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.label_3.setText(
                 f"Results have been written \nto '{self.output_filename}'."
             )
-
+            self.clearDictOut()
         except FileNotFoundError:
             if self.input_filename == "":
                 self.label_3.setText("Please enter an \ninput filename.")
@@ -108,7 +108,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                 self.student_data[row].append(
                     self.grade_score(int(self.student_data[row][0]), int(best[0]))
                 )
-
+            print(best)
             with open(self.output_filename, "w", newline="") as output_file:
                 writer = csv.writer(output_file)
 
@@ -118,7 +118,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.manerror.setText(
                 f"Results have been written \nto '{self.output_filename}'."
             )
-
+            self.clearDictOut()
         except FileNotFoundError:
             if self.input_filename == "":
                 self.manerror.setText("Please enter an \ninput filename.")
@@ -201,6 +201,9 @@ class Logic(QMainWindow, Ui_MainWindow):
             return "D"
         else:
             return "F"
+
+    def clearDictOut(self):
+        self.student_data = {}
 
     def searchScore(self, data_dict, name_to_search) -> str:
         """
